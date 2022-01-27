@@ -5,11 +5,13 @@ import allFoods from './foods.json';
 import FoodBox from './components/FoodBox';
 import AddNewFood from './components/AddNewFood';
 import Search from './components/Search';
+import DisplayMenu from './components/DisplayMenu';
 
 function App() {
   const [foods, setFoods] = useState(allFoods);
   const [showForm, setShowForm] = useState(false);
   const [searchedString, setSearchedString] = useState('');
+  const [menu, setMenu] = useState([]);
 
   const displayForm = () => {
     setShowForm(!showForm);
@@ -20,8 +22,9 @@ function App() {
     displayForm();
   };
 
-  const displayCals = (e) => {
-    console.log(e.target);
+  const sendMenu = (food, quantity) => {
+    food.quantity = quantity;
+    setMenu([...menu, food]);
   };
 
   let searchedFoods = null;
@@ -45,10 +48,15 @@ function App() {
             searchedString={searchedString}
             callbackSearch={setSearchedString}
           />
-          <FoodBox foods={searchedFoods} displayCals={displayCals} />
+          {searchedFoods.map((food, i) => (
+            <FoodBox food={food} sendMenu={sendMenu} key={i} />
+          ))}
         </div>
         <div className="column">
           <h1>Today's foods</h1>
+          <ul>
+            <DisplayMenu menu={menu} />
+          </ul>
         </div>
       </div>
     </div>
