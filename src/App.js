@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import 'bulma/css/bulma.css';
 import allFoods from './foods.json';
@@ -12,6 +12,7 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [searchedString, setSearchedString] = useState('');
   const [menu, setMenu] = useState([]);
+  const [totalCalories, setTotalCalories] = useState(0);
 
   const displayForm = () => {
     setShowForm(!showForm);
@@ -26,6 +27,16 @@ function App() {
     food.quantity = quantity;
     setMenu([...menu, food]);
   };
+
+  useEffect(() => {
+    menu.map((food) => {
+      return setTotalCalories(
+        totalCalories + Number(food.calories * food.quantity)
+      );
+    });
+  }, [menu]);
+
+  console.log(totalCalories);
 
   let searchedFoods = null;
   if (searchedString !== '') {
@@ -55,7 +66,7 @@ function App() {
         <div className="column">
           <h1>Today's foods</h1>
           <ul>
-            <DisplayMenu menu={menu} />
+            <DisplayMenu menu={menu} totalCalories={totalCalories} />
           </ul>
         </div>
       </div>

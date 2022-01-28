@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const DisplayMenu = ({ menu }) => {
-  const [totalCalories, setTotalCalories] = useState(0);
-
+const DisplayMenu = ({ menu, totalCalories }) => {
   return (
     <>
       {menu.map((food, i) => (
